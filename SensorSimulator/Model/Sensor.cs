@@ -11,10 +11,10 @@ public class Sensor
         EncoderType = encoderType;
         Frequency = frequency;
     }
-    public int ID = 2;
-    public string Type = "position";
-    public int MinValue = -10000;
-    public int MaxValue = 10000;
-    public string EncoderType = "fixed";
-    public int Frequency = 1;
+    public int ID { get; set; }
+    public string Type  { get; set; }
+    public int MinValue  { get; set; }
+    public int MaxValue  { get; set; }
+    public string EncoderType  { get; set; }
+    public int Frequency  { get; set; }
 }

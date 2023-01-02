@@ -1,12 +1,15 @@
+using Newtonsoft.Json;
 using SensorSimulator.Model;
 
 namespace SensorSimulator.Controller;
 
 public class JsonController
 {
-    public Sensor[] ReadFrom(string jsonPath)
+    public static List<Sensor>? ReadFrom(string jsonPath)
     {
-        Sensor[] result = {};
+        var streamReader = new StreamReader(jsonPath);
+        var json = streamReader.ReadToEnd();
+        var result = JsonConvert.DeserializeObject<List<Sensor>>(json); //TODO Change code to suit JSON struct
         return result;
     }
 }
