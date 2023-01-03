@@ -75,7 +75,6 @@ foreach (var timer in timers)
 
 Console.ReadLine();
 
-
 foreach (var timer in timers)
 {
     timer.Stop();
