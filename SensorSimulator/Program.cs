@@ -2,53 +2,26 @@
 using SensorSimulator.Model;
 using SensorSimulator.Controller;
 using Timer = System.Timers.Timer;
+using SensorSimulator.Converters;
 
 var rnd = new Random();
 var timers = new List<Timer>();
 Sensor[] sensorsArray;
 
-string GetQuality(int value, int minValue, int maxValue)
-{
-    string result;
-
-    var totalValue = maxValue - minValue;
-    
-    value -= minValue;
-    if (value < 0) value *= -1;
-    
-    var percentage = (float)value / totalValue;
-
-    switch (percentage)
-    {
-        case <= 0.10f:
-        case >= 0.90f:
-            result = "Alarm";
-            break;
-        case <= 0.25f:
-        case >= 0.75f:
-            result = "Warning";
-            break;
-        default:
-            result = "Normal";
-            break;
-    }
-    
-    return result;
-}
-
+//method to be called from timer with sensor instance.
 void OnTimedEvent(Sensor sensor)
 {
     var value = rnd.Next(sensor.MinValue, sensor.MaxValue);
-    var quality = GetQuality(value, sensor.MinValue, sensor.MaxValue);
+    var quality = QualityConverter.GetQuality(value, sensor.MinValue, sensor.MaxValue);
     Console.WriteLine($"$FIX, {sensor.ID}, {sensor.Type}, {value}, {quality}*");
 }
 
-//read JSON path
+//read JSON file path.
 while (true)
 {
     try
     {
-        Console.Write("Pass JSON path: ");
+        Console.Write("Pass JSON full path: ");
         var jsonPath = Console.ReadLine();
         sensorsArray = JsonController.ReadFrom(jsonPath).SensorsArray;
         break;
@@ -59,6 +32,7 @@ while (true)
     }
 }
 
+//create new timers with sensor instance.
 foreach (var sensor in sensorsArray)
 {
     var tmpTimer = new Timer(); 
@@ -68,13 +42,16 @@ foreach (var sensor in sensorsArray)
     timers.Add(tmpTimer);
 }
 
+//start all timers.
 foreach (var timer in timers)
 {
     timer.Start();
 }
 
+//pause program to see how timers works.
 Console.ReadLine();
 
+//stop timers and clear memory.
 foreach (var timer in timers)
 {
     timer.Stop();

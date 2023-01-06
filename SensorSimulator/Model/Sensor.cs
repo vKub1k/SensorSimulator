@@ -2,6 +2,9 @@ using Newtonsoft.Json;
 
 namespace SensorSimulator.Model;
 
+/// <summary>
+/// Class <c>Sensor</c> models a sensor with specific fields.
+/// </summary>
 public class Sensor
 { 
     [JsonProperty("ID")] public int ID { get; set; }
